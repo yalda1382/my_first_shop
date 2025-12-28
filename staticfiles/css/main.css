@@ -1,0 +1,36 @@
+body {
+    direction: rtl;
+    background: #f8f2e8;
+    font-family: sans-serif;
+}
+
+.header {
+    background: #553311;
+    padding: 15px;
+    color: #fff;
+}
+
+nav a {
+    color: #fff;
+    margin-left: 15px;
+}
+
+.product-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.product-card {
+    width: 220px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #aaa;
+}
+
+.product-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}

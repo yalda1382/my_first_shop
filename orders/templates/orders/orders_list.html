@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}سفارشات من{% endblock %}
+{% block content %}
+<h2>سفارشات شما</h2>
+{% if orders %}
+  <ul class="list-group">
+    {% for order in orders %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        سفارش #{{ order.id }} — {{ order.created_at|date:"Y-m-d H:i" }}
+        <span class="badge bg-primary">{{ order.total_price|floatformat:0 }} تومان</span>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <div class="alert alert-info">هیچ سفارشی ثبت نکرده‌اید.</div>
+{% endif %}
+{% endblock %}

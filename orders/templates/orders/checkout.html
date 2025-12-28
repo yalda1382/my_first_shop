@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}تکمیل خرید{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">✅ تکمیل خرید</h2>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="bg-white rounded p-4 mb-4" style="box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            <h5 class="mb-3">📦 محصولات سفارش</h5>
+            <table class="table">
+                <thead style="background-color: #f5f5f5;">
+                    <tr>
+                        <th>محصول</th>
+                        <th>قیمت</th>
+                        <th>تعداد</th>
+                        <th>جمع</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.product.price|floatformat:0 }} تومان</td>
+                        <td>{{ item.quantity }}</td>
+                        <td><strong>{{ item.total|floatformat:0 }} تومان</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="bg-white rounded p-4" style="box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+            <h5 class="mb-3">💳 خلاصه پرداخت</h5>
+            <hr>
+            <div class="d-flex justify-content-between mb-2">
+                <span>جمع کل:</span>
+                <strong>{{ total_price|floatformat:0 }} تومان</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+                <span>هزینه ارسال:</span>
+                <strong>رایگان</strong>
+            </div>
+            <hr>
+            <h4 class="text-danger text-center mb-4">
+                <strong>{{ total_price|floatformat:0 }} تومان</strong>
+            </h4>
+            
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary w-100 mb-2" style="padding: 12px; font-size: 16px;">
+                    ✅ تأیید و پرداخت
+                </button>
+            </form>
+            <a href="/orders/cart/" class="btn btn-secondary w-100">
+                بازگشت
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

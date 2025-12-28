@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}فروشگاه آنلاین{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'img/favicon.ico' %}">
+    <style>
+        * {
+            font-family: 'Vazirmatn', sans-serif !important;
+        }
+        
+        :root {
+            --primary: #d32f2f;
+            --secondary: #424242;
+            --light: #f5f5f5;
+            --dark: #212121;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .search-box {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .search-box input {
+            border-radius: 25px;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+        }
+        
+        .search-box button {
+            border-radius: 25px;
+            background-color: var(--primary);
+            border: none;
+        }
+        
+        .nav-link {
+            color: var(--secondary) !important;
+            margin: 0 10px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary) !important;
+        }
+        
+        .badge-cart {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+        }
+        
+        /* Cards */
+        .product-card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .product-card:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            height: 280px;
+            overflow: hidden;
+            background-color: #f9f9f9;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .product-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .product-stock {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #b71c1c;
+            transform: scale(1.02);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .sidebar h5 {
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        .category-item {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--secondary);
+            text-decoration: none;
+            display: block;
+        }
+        
+        .category-item:hover {
+            background-color: #ffe0e0;
+            color: var(--primary);
+        }
+        
+        .category-item.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            margin-top: 80px;
+            padding: 60px 0 20px;
+        }
+        
+        footer h6 {
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        footer a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        footer a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-divider {
+            border-top: 1px solid #444;
+            margin-top: 40px;
+            padding-top: 20px;
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            background-color: transparent;
+            padding: 20px 0;
+        }
+        
+        .breadcrumb-item.active {
+            color: var(--primary);
+        }
+        
+        /* Alerts */
+        .alert {
+            border-radius: 8px;
+            border: none;
+        }
+        
+        /* Pagination */
+        .pagination {
+            gap: 5px;
+        }
+        
+        .page-link {
+            border-radius: 6px;
+            color: var(--primary);
+            border: 1px solid #ddd;
+        }
+        
+        .page-link.active {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* Digikala-like top header (rtl) */
+        .dk-topbar {background:#f5f5f5; font-size:13px;}
+        .dk-topbar a {color:#444; text-decoration:none}
+        .dk-main {background:#fff; box-shadow:0 2px 8px rgba(0,0,0,.06)}
+        .dk-logo {font-weight:800; color:#d61f1f; font-size:28px; letter-spacing:1px}
+        .dk-search {max-width:760px; width:100%}
+        .dk-cat-select {min-width:150px; max-width:220px}
+        .dk-icons a {color:#444; margin-left:18px; position:relative}
+        .dk-icons .badge-cart {position:absolute; top:-6px; left:-10px; background:#d61f1f; color:#fff; border-radius:50%; font-size:12px; padding:3px 6px}
+        .dk-catsbar {background:#fff; border-top:1px solid #eee; overflow:auto}
+        .dk-catsbar .nav-link {white-space:nowrap; padding:12px 18px; color:#444; font-weight:500}
+        .dk-catsbar .nav-link:hover {color:#d61f1f}
+        @media (max-width:767px){ .dk-search {max-width:100%} .dk-cat-select{display:none} }
+
+        .dk-icons { display:flex; gap:12px; align-items:center; }
+        .dk-icons a {
+          display:inline-flex;
+          align-items:center;
+          justify-content:center;
+          width:44px;
+          height:44px;
+          border-radius:8px;
+          background:transparent; /* remove solid square */
+          color:#444;
+          text-decoration:none;
+          position:relative;
+        }
+        .dk-icons a:hover { background: rgba(0,0,0,0.03); }
+        .dk-icons .badge-cart {
+          position:absolute;
+          top:6px;
+          left:6px;
+          background:#d61f1f;
+          color:#fff;
+          border-radius:50%;
+          font-size:12px;
+          padding:3px 6px;
+          min-width:22px;
+          text-align:center;
+          line-height:1;
+        }
+        /* make icon inside not appear cropped */
+        .dk-icons i { font-size:18px; }
+        @media (max-width:767px){
+          .dk-icons a { width:40px; height:40px; border-radius:8px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header" style="direction:rtl;">
+      <style>
+        /* Modern Digikala-like header */
+        .dk-topbar{background:#f6f7f9;padding:6px 0;font-size:13px}
+        .dk-topbar a{color:#444;text-decoration:none}
+        .dk-main{background:#fff;padding:14px 0;box-shadow:0 2px 10px rgba(8,12,20,.04)}
+        .dk-logo{display:flex;align-items:center;gap:10px;color:#d61f1f;font-weight:800;font-size:22px}
+        .dk-search{max-width:760px;flex:1;margin:0 18px;display:flex;align-items:center}
+        .dk-search .form-control{height:46px;border-radius:8px 0 0 8px}
+        .dk-search .btn-search{height:46px;border-radius:0 8px 8px 0}
+        .dk-category-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;background:#f5f6f8}
+        .dk-icons{display:flex;gap:10px;align-items:center}
+        .icon-btn{width:50px;height:50px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;color:#333;background:transparent;border:none;position:relative}
+        .icon-btn:hover{background:rgba(0,0,0,.03)}
+        .badge-count{position:absolute;top:6px;left:6px;background:#d61f1f;color:#fff;border-radius:50%;padding:3px 7px;font-size:12px;min-width:22px;text-align:center}
+        .user-dropdown .dropdown-menu{right:0;left:auto}
+        .mega-cats{min-width:560px;padding:12px}
+        .mega-cats .cat-item{display:flex;gap:10px;align-items:center;padding:8px;border-radius:8px}
+        .mega-cats .cat-item:hover{background:#fff7f7}
+        @media(max-width:991px){ .dk-search{max-width:400px} .mega-cats{min-width:100%} }
+      </style>
+
+      <!-- top small bar -->
+      <div class="dk-topbar">
+        <div class="container d-flex justify-content-between align-items-center">
+          <div class="d-flex gap-3 align-items-center">
+            <small>پشتیبانی: <a href="tel:09000000000">0912 672 1332</a></small>
+            <small>|</small>
+            <a href="#">راهنما</a>
+          </div>
+
+          <div class="d-flex gap-3 align-items-center">
+            {% if user.is_authenticated %}
+              <a href="/accounts/profile/">سلام، {{ user.username }}</a>
+              <a href="/accounts/logout/">خروج</a>
+            {% else %}
+              <a href="/accounts/login/">ورود</a>
+              <a href="/accounts/register/">ثبت‌نام</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- main header -->
+      <div class="dk-main">
+        <div class="container d-flex align-items-center">
+          <!-- categories button with mega menu -->
+          <div class="me-2">
+            <div class="dropdown">
+              <button class="dk-category-btn dropdown-toggle" id="catsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-bars"></i> دسته‌بندی‌ها
+              </button>
+              <div class="dropdown-menu p-3 mega-cats" aria-labelledby="catsDropdown">
+                <div class="row gx-3">
+                  {% for c in categories %}
+                  <div class="col-6 col-md-4">
+                    <a class="cat-item text-decoration-none text-dark" href="/?category={{ c.id }}">
+                      <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width:46px;height:46px">
+                        {% if c.name == 'دیجیتالی' %}<i class="fas fa-tv"></i>
+                        {% elif c.name == 'غذا' %}<i class="fas fa-utensils"></i>
+                        {% elif c.name == 'خوراکی' %}<i class="fas fa-apple-alt"></i>
+                        {% elif c.name == 'پوشاک' %}<i class="fas fa-tshirt"></i>
+                        {% elif c.name == 'خانه و آشپزخانه' %}<i class="fas fa-blender"></i>
+                        {% elif c.name == 'بهداشتی' %}<i class="fas fa-hand-holding-medical"></i>
+                        {% elif c.name == 'زیبایی و سلامت' %}<i class="fas fa-heartbeat"></i>
+                        {% else %}<i class="fas fa-tags"></i>{% endif %}
+                      </div>
+                      <div>
+                        <div style="font-weight:700;margin-top:4px">{{ c.name }}</div>
+                        {% if c.description %}<small class="text-muted">{{ c.description|truncatechars:40 }}</small>{% endif %}
+                      </div>
+                    </a>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- logo --> <a class="dk-logo" href="/"> <img src="{% static 'img/logo-mini.png' %}" alt="logo" style="height:38px" onerror="this.style.display='none'"> <span>فروشگاه</span> </a>
+
+          <!-- search -->
+          <form method="GET" action="/" class="dk-search ms-3 me-3">
+            <input name="search" class="form-control" type="text" placeholder="جستجو در بین میلیون‌ها کالا..." value="{{ request.GET.search }}">
+            <select name="category" class="form-select ms-2 dk-cat-select" style="width:170px">
+              <option value="">همه دسته‌ها</option>
+              {% for c in categories %}<option value="{{ c.id }}" {% if request.GET.category == c.id|stringformat:"s" %}selected{% endif %}>{{ c.name }}</option>{% endfor %}
+            </select>
+            <button class="btn btn-danger btn-search ms-2"><i class="fas fa-search"></i></button>
+          </form>
+
+          <!-- right icons -->
+          <div class="dk-icons">
+            <!-- favorites (example) -->
+            <a href="/favorites/" class="icon-btn" title="علاقه‌مندی‌ها">
+              <i class="fas fa-heart"></i>
+            </a>
+
+            <!-- orders dropdown -->
+            <div class="dropdown">
+              <button class="icon-btn" id="ordersBtn" data-bs-toggle="dropdown" aria-expanded="false" title="سفارشات">
+                <i class="fas fa-box-open"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="ordersBtn">
+                <li><a class="dropdown-item" href="/orders/orders/">سفارشات من</a></li>
+                <li><a class="dropdown-item" href="/orders/orders/?status=processing">در حال پردازش</a></li>
+                <li><a class="dropdown-item" href="/orders/orders/?status=delivered">تحویل شده</a></li>
+              </ul>
+            </div>
+
+            <!-- cart -->
+            <a href="/orders/cart/" class="icon-btn" title="سبد خرید">
+              <i class="fas fa-shopping-cart"></i>
+              {% if cart_count and cart_count > 0 %}
+                <span class="badge-count">{{ cart_count }}</span>
+              {% endif %}
+            </a>
+
+            <!-- user dropdown -->
+            <div class="dropdown user-dropdown">
+              <button class="icon-btn" id="userBtn" data-bs-toggle="dropdown" aria-expanded="false" title="حساب کاربری">
+                <i class="fas fa-user"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="userBtn">
+                {% if user.is_authenticated %}
+                  <li><a class="dropdown-item" href="/accounts/profile/">پروفایل</a></li>
+                  <li><a class="dropdown-item" href="/orders/orders/">سفارشات من</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item text-danger" href="/accounts/logout/">خروج</a></li>
+                {% else %}
+                  <li><a class="dropdown-item" href="/accounts/login/">ورود</a></li>
+                  <li><a class="dropdown-item" href="/accounts/register/">ثبت‌نام</a></li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- categories mini nav -->
+      <div class="catsbar" style="border-top:1px solid #efefef;background:#fff;padding:8px 0">
+        <div class="container">
+          <nav class="nav">
+            <a class="nav-link" href="/">پیشنهاد ویژه</a>
+            {% for c in categories %}<a class="nav-link" href="/?category={{ c.id }}">{{ c.name }}</a>{% endfor %}
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Categories Modal -->
+    <div class="modal fade" id="catsModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="direction: rtl;">
+          <div class="modal-header">
+            <h5 class="modal-title">دسته‌بندی‌ها</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              {% for c in categories %}
+              <div class="col-6 col-md-4">
+                <a href="/?category={{ c.id }}" class="d-flex align-items-center gap-3 p-2 text-decoration-none text-dark category-item-modal">
+                  <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                    {% if c.name == 'دیجیتالی' %}
+                      <i class="fas fa-tv fa-lg"></i>
+                    {% elif c.name == 'غذا' %}
+                      <i class="fas fa-utensils fa-lg"></i>
+                    {% elif c.name == 'خوراکی' %}
+                      <i class="fas fa-apple-alt fa-lg"></i>
+                    {% elif c.name == 'پوشاک' %}
+                      <i class="fas fa-tshirt fa-lg"></i>
+                    {% elif c.name == 'خانه و آشپزخانه' %}
+                      <i class="fas fa-blender fa-lg"></i>
+                    {% elif c.name == 'بهداشتی' %}
+                      <i class="fas fa-hand-holding-medical fa-lg"></i>
+                    {% elif c.name == 'زیبایی و سلامت' %}
+                      <i class="fas fa-heartbeat fa-lg"></i>
+                    {% else %}
+                      <i class="fas fa-tags fa-lg"></i>
+                    {% endif %}
+                  </div>
+                  <div>
+                    <div style="font-weight:600">{{ c.name }}</div>
+                    {% if c.description %}
+                      <small class="text-muted">{{ c.description|truncatechars:40 }}</small>
+                    {% endif %}
+                  </div>
+                </a>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="py-4">
+        <div class="container-fluid">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <h6>درباره فروشگاه</h6>
+                    <p style="font-size: 14px; color: #ccc;">
+                        فروشگاه آنلاین پیشرو با بهترین کیفیت و قیمت
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    <h6>خدمات</h6>
+                    <a href="#">درباره ما</a>
+                    <a href="#">تماس با ما</a>
+                    <a href="#">شرایط استفاده</a>
+                </div>
+                <div class="col-md-3">
+                    <h6>پشتیبانی</h6>
+                    <a href="#">راهنما</a>
+                    <a href="#">سوالات متکی</a>
+                    <a href="#">بازگرداندن محصول</a>
+                </div>
+                <div class="col-md-3">
+                    <h6>تماس با ما</h6>
+                    <a href="tel:09000000000"><i class="fas fa-phone"></i> 0900 000 0000</a>
+                    <a href="mailto:info@shop.com"><i class="fas fa-envelope"></i> info@shop.com</a>
+                </div>
+            </div>
+            <div class="footer-divider">
+                <div class="text-center">
+                    <p>&copy; 2025 فروشگاه آنلاین. تمام حقوق محفوظ است.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+    .category-item-modal:hover { background:#fff7f7; border-radius:8px; }
+    </style>
+
+    <script>
+     // وقتی روی یک لینک دسته کلیک شد مودال بسته و صفحه به بالا اسکرول می‌کند (رفتار دیجی‌کالا مانند)
+     document.addEventListener('click', function(e){
+       const a = e.target.closest('.category-item-modal');
+       if(!a) return;
+       // اجازه بده لینک عادی اجرا شود، اما مودال را ببند
+       const modalEl = document.getElementById('catsModal');
+       const modal = bootstrap.Modal.getInstance(modalEl);
+       if(modal) modal.hide();
+       // بعد از بسته شدن مودال اسکرول نرم به بالا
+       setTimeout(()=> window.scrollTo({top:0, behavior:'smooth'}), 250);
+     });
+
+     // UX: وقتی کاربر دسته‌ای را در مگا منو انتخاب می‌کند مودال بسته و صفحه به بالا اسکرول شود
+     document.addEventListener('click', function(e){
+       const a = e.target.closest('.mega-cats a, .cat-item');
+       if(!a) return;
+       const dd = document.getElementById('catsDropdown');
+       const ins = bootstrap.Dropdown.getInstance(dd);
+       if(ins) try{ ins.hide(); }catch(e){}
+       setTimeout(()=> window.scrollTo({top:0,behavior:'smooth'}), 180);
+     });
+    </script>
+</body>
+</html>

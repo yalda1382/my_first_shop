@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}سبد خرید{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">🛒 سبد خرید</h2>
+
+{% if cart_items %}
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="bg-white rounded p-4" style="box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead style="background-color: #f5f5f5;">
+                            <tr>
+                                <th>محصول</th>
+                                <th>قیمت</th>
+                                <th>تعداد</th>
+                                <th>جمع</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_items %}
+                            <tr>
+                                <td>
+                                    <div style="display: flex; gap: 15px; align-items: center;">
+                                        {% if item.product.image %}
+                                            <img src="{{ item.product.image.url }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px;">
+                                        {% endif %}
+                                        <a href="/products/product/{{ item.product.id }}/" style="text-decoration: none; color: #212121;">
+                                            {{ item.product.name }}
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>{{ item.product.price|floatformat:0 }} تومان</td>
+                                <td><strong>{{ item.quantity }}</strong></td>
+                                <td class="text-danger"><strong>{{ item.total|floatformat:0 }}</strong> تومان</td>
+                                <td>
+                                    <a href="/orders/remove/{{ item.product.id }}/" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="bg-white rounded p-4" style="box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                <h5 class="mb-3">📋 خلاصه سفارش</h5>
+                <hr>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>جمع کل:</span>
+                    <strong>{{ total_price|floatformat:0 }} تومان</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <span>هزینه ارسال:</span>
+                    <strong style="color: green;">رایگان</strong>
+                </div>
+                <hr>
+                <h4 class="text-danger text-center mb-4">
+                    <strong>{{ total_price|floatformat:0 }} تومان</strong>
+                </h4>
+                <a href="/orders/checkout/" class="btn btn-primary w-100 mb-2" style="padding: 12px; font-size: 16px;">
+                    ✅ تکمیل خرید
+                </a>
+                <a href="/" class="btn btn-secondary w-100">
+                    🛍️ ادامه خرید
+                </a>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-warning text-center py-5">
+        <h4>🛒 سبد خرید شما خالی است!</h4>
+        <p class="mb-3">هنوز هیچ محصولی انتخاب نکرده‌اید.</p>
+        <a href="/" class="btn btn-primary">🛍️ برگشت به فروشگاه</a>
+    </div>
+{% endif %}
+{% endblock %}

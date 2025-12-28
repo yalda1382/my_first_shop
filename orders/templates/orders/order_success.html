@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}سفارش با موفقیت ثبت شد{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <div style="font-size: 80px; color: #4caf50; margin-bottom: 20px;">
+        <i class="fas fa-check-circle"></i>
+    </div>
+    <h2 class="mb-3">✅ سفارش شما با موفقیت ثبت شد!</h2>
+    <p class="lead mb-4" style="font-size: 18px;">شماره سفارش: <strong>#{{ order.id }}</strong></p>
+    
+    <div class="bg-white rounded p-4 mx-auto mb-4" style="max-width: 400px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+        <p class="mb-2"><strong>مبلغ:</strong> {{ order.total_price|floatformat:0 }} تومان</p>
+        <p class="mb-2"><strong>وضعیت:</strong> <span class="badge bg-warning">{{ order.get_status_display }}</span></p>
+        <p class="mb-0"><strong>تاریخ:</strong> {{ order.created_at|date:"Y-m-d H:i" }}</p>
+    </div>
+    
+    <div class="mt-4">
+        <a href="/orders/orders/" class="btn btn-primary me-2">
+            <i class="fas fa-list"></i> مشاهده سفارشات
+        </a>
+        <a href="/" class="btn btn-secondary">
+            <i class="fas fa-shopping-bag"></i> بازگشت به فروشگاه
+        </a>
+    </div>
+</div>
+{% endblock %}

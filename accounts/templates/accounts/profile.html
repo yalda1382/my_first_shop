@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}پروفایل کاربری{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white">
+                <h4>👤 اطلاعات حساب</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>نام کاربری:</strong> {{ request.user.username }}</p>
+                <p><strong>ایمیل:</strong> {{ request.user.email }}</p>
+                <p><strong>نام کامل:</strong> {{ request.user.first_name }} {{ request.user.last_name }}</p>
+                <p><strong>تاریخ عضویت:</strong> {{ request.user.date_joined|date:"Y-m-d" }}</p>
+            </div>
+        </div>
+        
+        <div class="card shadow-lg mt-4">
+            <div class="card-header bg-info text-white">
+                <h4>📞 اطلاعات تماس</h4>
+            </div>
+            <div class="card-body">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label">تلفن</label>
+                        {{ form.phone }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">شهر</label>
+                        {{ form.city }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">آدرس</label>
+                        {{ form.address }}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success">💾 ذخیره تغییرات</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card shadow-lg">
+            <div class="card-header bg-secondary text-white">
+                <h5>🔗 لینک‌های سریع</h5>
+            </div>
+            <div class="card-body">
+                <a href="/orders/orders/" class="btn btn-primary w-100 mb-2">📦 سفارشات من</a>
+                <a href="/" class="btn btn-secondary w-100 mb-2">🛍️ فروشگاه</a>
+                <a href="/accounts/logout/" class="btn btn-danger w-100">🚪 خروج</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control, .form-control:focus, .form-control-plaintext {
+        direction: rtl;
+        text-align: right;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+</style>
+{% endblock %}

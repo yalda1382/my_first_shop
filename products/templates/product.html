@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a class="breadcrumb-item" href="/">فروشگاه</a>
+    <a class="breadcrumb-item" href="/?category={{ product.category.id }}">{{ product.category.name }}</a>
+    <span class="breadcrumb-item active">{{ product.name }}</span>
+</nav>
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="product-image" style="height: 450px; border-radius: 12px; overflow: hidden;">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+            {% else %}
+                <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                    <i class="fas fa-image" style="font-size: 100px; color: #ddd;"></i>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-7">
+        <h1 class="mb-3">{{ product.name }}</h1>
+        
+        <p style="font-size: 14px; color: #999;">
+            <a href="/?category={{ product.category.id }}" style="color: #d32f2f; text-decoration: none;">
+                📁 {{ product.category.name }}
+            </a>
+        </p>
+        
+        <div class="product-price mb-3" style="font-size: 32px;">
+            {{ product.price|floatformat:0 }} <span style="font-size: 18px;">تومان</span>
+        </div>
+        
+        <div class="alert alert-info mb-4">
+            <strong>📦 موجودی:</strong>
+            {% if product.stock > 0 %}
+                <span class="badge bg-success ms-2">✓ {{ product.stock }} عدد در انبار</span>
+            {% else %}
+                <span class="badge bg-danger ms-2">✗ تمام شده</span>
+            {% endif %}
+        </div>
+        
+        <h5 class="mb-3">📝 توضیحات:</h5>
+        <p style="line-height: 1.8; color: #555; margin-bottom: 30px;">{{ product.description }}</p>
+        
+        {% if product.stock > 0 %}
+        <form method="POST" action="/orders/add/{{ product.id }}/" class="mt-4">
+            {% csrf_token %}
+            <div class="row align-items-end">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label"><strong>تعداد:</strong></label>
+                    <input type="number" name="quantity" min="1" max="{{ product.stock }}" value="1" class="form-control">
+                </div>
+                <div class="col-md-8">
+                    <button type="submit" class="btn btn-primary w-100" style="padding: 12px; font-size: 16px;">
+                        <i class="fas fa-shopping-cart"></i> افزودن به سبد خرید
+                    </button>
+                </div>
+            </div>
+        </form>
+        {% else %}
+        <div class="alert alert-danger">
+            <strong>⚠️ این محصول تمام شده است!</strong>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if related_products %}
+<div class="mt-5 pt-5 border-top">
+    <h4 class="mb-4">🔗 محصولات مرتبط</h4>
+    <div class="row">
+        {% for related in related_products %}
+        <div class="col-md-3 mb-4">
+            <div class="product-card">
+                <div class="product-image">
+                    {% if related.image %}
+                        <img src="{{ related.image.url }}" alt="{{ related.name }}">
+                    {% else %}
+                        <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                            <i class="fas fa-image" style="font-size: 40px; color: #ddd;"></i>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <h6 class="product-name">{{ related.name }}</h6>
+                    <div class="product-price">{{ related.price|floatformat:0 }}</div>
+                    <a href="/products/product/{{ related.id }}/" class="btn btn-primary w-100" style="padding: 8px; font-size: 14px;">
+                        مشاهده
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

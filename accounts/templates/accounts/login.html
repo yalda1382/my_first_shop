@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}ورود{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow-lg">
+            <div class="card-body p-4">
+                <h3 class="text-center mb-4">🔐 ورود به حساب</h3>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label">نام کاربری</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">رمز عبور</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100 btn-lg">🔓 ورود</button>
+                </form>
+                
+                <hr>
+                <p class="text-center">حساب کاربری ندارید؟ <a href="/accounts/register/">ثبت نام کنید</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control, .form-control:focus {
+        direction: rtl;
+        text-align: right;
+    }
+    .form-label {
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
